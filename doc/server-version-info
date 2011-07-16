@@ -1,0 +1,47 @@
+                              Server VERSION Info
+
+   Copyright (c) 2001 by ircd-hybrid team
+   Copyright (c) 2002 ircd-ratbox development team
+
+     ----------------------------------------------------------------------
+
+   When you type /version, you will often see something like this:
+
+   SporksIRCD-1.0.0(20101125-b26fdb09f3b5). mewtwo.sporksirc.net :eHIKMpSZ6 TS6ow 420
+
+   Ever wondered what those funny chars mean after the version number? Well
+   here they are:
+
+   +----------------------------+
+   | 'e'  | USE_EXCEPT          |
+   |------+---------------------|
+   | 'g'  | NO_FAKE_GLINES      |
+   |------+---------------------|
+   | 'G'  | GLINES              |
+   |------+---------------------|
+   | 'H'  | HUB                 |
+   |------+---------------------|
+   | 'I'  | USE_INVEX           |
+   |------+---------------------|
+   | 'K'  | USE_KNOCK           |
+   |------+---------------------|
+   | 'M'  | IDLE_FROM_MSG       |
+   |------+---------------------|
+   | 'p'  | CRYPT_OPER_PASSWORD |
+   |------+---------------------|
+   | 'S'  | OPERS_SEE_ALL_USERS |
+   |------+---------------------|
+   | 'Z'  | ZIPLINKS            |
+   |------+---------------------|
+   | '6'  | IPv6                |
+   |------+---------------------|
+   |      |                     |
+   |------+---------------------|
+   | 'TS' | Supports TS         |
+   |------+---------------------|
+   | '6   | TS Version 6        |
+   |------+---------------------|
+   | 'o'  | TS Only             |
+   |------+---------------------|
+   | 'w'  | TS Warnings         |
+   +----------------------------+

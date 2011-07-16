@@ -1,0 +1,90 @@
+\documentclass[11pt,letterpaper,twoside]{book}
+
+%%% PAGE DIMENSIONS
+\usepackage[papersize={8.5in,11in}]{geometry}
+\geometry{inner=0.5in,outer=1in}
+\geometry{top=1in,bottom=1in}
+\geometry{bindingoffset=0.25in}
+
+
+%%% FONT APPEARANCE
+\renewcommand{\rmdefault}{ppl}
+\renewcommand{\ttdefault}{pcr}
+
+%%% PACKAGES
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{booktabs}	% for much better looking tables
+\usepackage{paralist}	% very flexible & customisable lists
+			% (eg. enumerate/itemize, etc.)
+\usepackage{verbatim}	% adds environment for commenting out blocks of text &
+			% for better verbatim
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{fancybox}
+\usepackage{makeidx}
+\usepackage{hyperref} %\usepackage{html}
+\hypersetup{
+	pdftitle={Operators guide for the SporksIRCD IRC server},
+	pdfauthor={William Pitcock, Jilles Tjoelker, Elizabeth Jennifer Myers,
+		and Lee T. Starnes},
+	colorlinks=true,	% get rid of the fugly box
+	linkcolor=red,		% color of internal links
+	citecolor=green,	% color of links to bibliography
+	filecolor=cyan,		% color of file links
+	urlcolor=blue		% color of external links
+}
+
+\setcounter{tocdepth}{5}
+\setcounter{secnumdepth}{5}
+
+\title{Operators guide for the SporksIRCD IRC server}
+\author{William Pitcock \and Jilles Tjoelker \and Elizabeth Jennifer Myers \and
+Lee T. Starnes \and Andrew Wilcox}
+\date{2011}
+
+\newcommand{\notebox}[2]{
+	\begin{minipage}{0.2\textwidth}
+		\begin{flushleft} \large
+			\textit{#1}
+		\end{flushleft}
+	\end{minipage}
+	\begin{minipage}{0.8\textwidth}
+		\begin{flushleft} \large
+			#2
+		\end{flushleft}
+	\end{minipage}
+}
+
+\newcommand{\command}[1]{ {\ttfamily #1} }
+\newcommand{\literal}[1]{ {\ttfamily\small #1} }
+\newcommand{\userliteral}[1]{ { \literal{\em #1}} }
+
+\makeindex
+\makeglossary
+\begin{document}
+\label{sporksircd-oper-guide}
+
+%% Legalnotices
+\def\DBKlegalblock{
+\def\DBKlegaltitle{}
+\begin{DBKlegalnotice}
+
+ 	Permission is granted to copy, distribute and/or modify this document
+	under the terms of the GNU General Public License, Version 2 or any
+	later version published by the Free Software Foundation
+ 
+\end{DBKlegalnotice}
+}
+\maketitle
+\tableofcontents
+
+\input{intro.tex}
+\input{umodes.tex}
+\input{cmodes.tex}
+\input{ucommands.tex}
+\input{commands.tex}
+\input{oprivs.tex}
+\input{config.tex}
+
+\end{document}
+

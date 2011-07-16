@@ -1,0 +1,19 @@
+Technical Documentation for SporksIRCD
+
+Persistent_Clients.txt    - A global UID and Persistent client (with cookies)
+                            proposal
+README.TSora              - Description of the TS3 protocol
+ts6-protocol.txt          - Information on TS6.
+ts6.txt                   - Revisions in the TS6 protocol.
+README.openssl            - Information for users who have problems with
+                            SporksIRCD, OpenSSL, and their operating system
+cluster.txt               - Outline of clustering.
+event.txt                 - Outline of the event system
+euid.txt                  - EUID specification
+fd-management.txt         - Outline of the file descriptor management system
+file-management.txt       - Outline of the disk file management system
+hostmask.txt              - Outline of hostmask handling
+linebuf.txt               - Outline of the linebuf system (dbuf replacement)
+network.txt               - Outline of the network traffic subsystem
+send.txt                  - Document on all of the send_to functions
+

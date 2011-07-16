@@ -1,0 +1,246 @@
+\chapter{User Commands}
+\label{ucommands}
+
+\section{User commands}
+
+	Standard IRC commands are not listed here. Several of the commands in
+	the operator commands chapter can also be used by normal users.
+
+
+\subsection{ACCEPT}
+
+\command{ACCEPT}
+    \userliteral{nick}\literal{,-{}}\userliteral{nick}\literal{,}
+    \userliteral{...}
+
+	Adds or removes users from your accept list for umode +g and +R. Users
+	are automatically removed when they quit, split or change nick.
+
+
+\command{ACCEPT}
+    \literal{*}
+
+	Lists all users on your accept list.
+
+	Support of this command is indicated by the CALLERID token in
+	RPL\_ISUPPORT (005); the optional parameter indicates the letter of the
+	`only allow accept users to send private messages' umode, otherwise +g.
+	In SporksIRCD this is always +g.
+
+
+\subsection{CNOTICE}
+
+\command{CNOTICE}
+    \userliteral{nick} \userliteral{channel} \literal{:}\userliteral{text}
+
+	Providing you are opped (+o) or voiced (+v) in \userliteral{channel},
+	and \userliteral{nick} is a member of \userliteral{channel}, CNOTICE
+	generates a NOTICE towards \userliteral{nick}.
+
+	CNOTICE bypasses any anti-{}spam measures in place. If you get `Targets
+	changing too fast, message dropped', you should probably use this
+	command, for example sending a notice to every user joining a certain
+	channel.
+
+	Note: NOTICE automatically behaves as CNOTICE if you are in a channel
+	fulfilling the conditions.
+
+	Support of this command is indicated by the CNOTICE token in
+	RPL\_ISUPPORT (005).
+
+
+\subsection{CPRIVMSG}
+
+\command{CPRIVMSG}
+    \userliteral{nick} \userliteral{channel} \literal{:}\userliteral{text}
+
+	Providing you are opped (+o) or voiced (+v) in \userliteral{channel},
+	and \userliteral{nick} is a member of \userliteral{channel}, CPRIVMSG
+	generates a PRIVMSG towards \userliteral{nick}.
+
+	CPRIVMSG bypasses any anti-{}spam measures in place. If you get
+	`Targets changing too fast, message dropped', you should probably use
+	this command.
+
+	Note: PRIVMSG automatically behaves as CPRIVMSG	if you are in a channel
+	fulfilling the conditions.
+
+	Support of this command is indicated by the CPRIVMSG token in
+	RPL\_ISUPPORT (005).
+
+
+\subsection{ROLEPLAY}
+
+	ROLEPLAY consists of a number of similar commands, all of which send
+	messages to channel under 'fake' nicknames. The user of the command can
+	be identified by looking at the ident of the 'fake' user - it will
+	always be the nickname of the person using the command, and the host
+	will always be npc.fakeuser.invalid. These commands require the target
+	channel to be set +N, and obey the same restrictions as regular
+	PRIVMSG.
+
+\notebox{Note}{
+	These commands are only enabled with m\_roleplay.so loaded.
+}
+
+\subsubsection{NPC}
+\command {NPC}
+    \userliteral{channel} \userliteral{nick} \literal{:} \userliteral{message}
+
+	Sends a standard roleplay message to \userliteral{channel} with the
+	\userliteral{nick} specified specified.
+
+\subsubsection{NPCA}
+\command{NPCA}
+    \userliteral{channel} \userliteral{nick} \literal{:} \userliteral{message}
+
+	Sends a CTCP action message to \userliteral{channel} with the 
+	\userliteral{nick} specified.
+
+\subsubsection{SCENE}
+\command{SCENE}
+    \userliteral{channel} \literal{:} \userliteral{message}
+
+	The same as NPC, except the message always originates from the
+	nickname =Scene=, which will not be underlined like the other commands.
+
+\subsubsection{FSAY}
+\command{FSAY}
+    \userliteral{channel} \userliteral{nick} \literal{:} \userliteral{message}
+
+	This command is exactly like NPC, except the nickname will not be
+	underlined if the person running the command is an operator.
+
+\notebox{Note}{
+	This command is disabled by default unless -DABUSIVE\_ROLEPLAY is in
+	your CFLAGS.
+}
+
+\subsubsection{FACTION}
+\command{FACTION}
+    \userliteral{channel} \userliteral{nick} \literal{:} \userliteral{message}
+
+	This command is exactly like NPCA, except the nickname will not be
+	underlined if the person running the command is an operator.
+
+\notebox{Note}{
+	This command is disabled by default unless -DABUSIVE\_ROLEPLAY is in
+	your CFLAGS.
+}
+
+
+\subsection{FINDFORWARDS}
+
+\command{FINDFORWARDS}
+    \userliteral{channel}
+
+\notebox{Note}{
+
+	This command is only available if the \nolinkurl{m_findforwards.so}
+	extension is loaded.
+
+}
+	Displays which channels forward to the given channel (via cmode +f). If
+	there are very many channels the list will be truncated.
+
+	You must be a channel operator on the channel or an IRC operator to use
+	this command.
+
+
+\subsection{HELP}
+
+\command{HELP}
+    [\userliteral{topic}]
+
+	Displays help information. \userliteral{topic} can be \literal{INDEX},
+	\literal{CREDITS}, \literal{UMODE}, \literal{CMODE}, \literal{SNOMASK},
+	or a command name.
+
+
+	There are separate help files for users and opers. Opers can use UHELP
+	to query the user help files.
+
+
+\subsection{IDENTIFY}
+
+\command{IDENTIFY}
+    \userliteral{parameters...}
+
+\notebox{Note}{
+
+	This command is only available if the \nolinkurl{m_identify.so}
+	extension is loaded.
+
+}
+	Sends an identify command to either NickServ or ChanServ. If the first
+	parameter starts with \#, the command is sent to ChanServ, otherwise to
+	NickServ. The word IDENTIFY, a space and all parameters are
+	concatenated and sent as a PRIVMSG to the service. If the service is
+	not online or does not have umode +S set, no message will be sent.
+
+	The exact syntax for this command depends on the services package in
+	use.
+
+
+\subsection{KNOCK}
+
+\command{KNOCK}
+    \userliteral{channel}
+
+	Requests an invite to the given channel. The channel must be locked
+	somehow (+ikl), must not be +p and you may not be banned or quieted.
+	Also, this command is rate limited.
+
+	If successful, all channel operators will receive a 710 numeric. The
+	recipient field of this numeric is the channel.
+
+	Support of this command is indicated by the KNOCK token in
+	RPL\_ISUPPORT (005).
+
+
+\subsection{MONITOR}
+
+	Server side notify list. This list contains nicks. When a user
+	connects, quits with a listed nick or changes to or from a listed nick,
+	you will receive a 730 numeric if the nick went online and a 731
+	numeric if the nick went offline.
+
+	Support of this command is indicated by the MONITOR token in
+	RPL\_ISUPPORT (005); the parameter indicates the maximum number of
+	nicknames you may have in your monitor list.
+
+	You may only use this command once per second.
+
+	More details can be found in \nolinkurl{doc/monitor.txt} in the source
+	distribution.
+
+
+\command{MONITOR +}
+    \userliteral{nick}\literal{,}\userliteral{...}
+
+	Adds nicks to your monitor list. You will receive 730 and 731 numerics
+	for the nicks.
+
+
+\command{MONITOR -{}}
+    \userliteral{nick}\literal{,}\userliteral{...}
+
+	Removes nicks from your monitor list. No output is generated for this
+	command.
+
+
+\command{MONITOR C}
+
+	Clears your monitor list. No output is generated for this command.
+
+
+\command{MONITOR L}
+
+	Lists all nicks on your monitor list, using 732 numerics and ending
+	with a 733 numeric.
+
+
+\command{MONITOR S}
+
+	Shows status for all nicks on your monitor list, using 730 and 731
+	numerics.

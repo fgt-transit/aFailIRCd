@@ -36,6 +36,5 @@ tools/convertklines
 tools/mkpasswd
 tools/viconf
 include/serno.h
-doc/*
 patches/*
 unsupported/*

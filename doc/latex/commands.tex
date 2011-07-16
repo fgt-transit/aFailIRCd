@@ -1,0 +1,824 @@
+\chapter{Operator Commands}
+\label{commands}
+
+\section{Network management commands}
+\notebox{Note}{
+	All commands and names are case insensitive.
+	Parameters consisting of one or more separate letters,
+	such as in MODE, STATS and WHO, are case sensitive.
+}
+
+\subsection{CONNECT}
+
+\command{CONNECT}
+    \userliteral{target} [\userliteral{port}] [\userliteral{source}]
+
+	Initiate a connection attempt to server \userliteral{target}. If
+	\userliteral{port} is given, connect to that port on the target,
+	otherwise use the one given in \nolinkurl{ircd.conf}. If
+	\userliteral{source} is given, tell that server to initiate the
+	connection attempt, otherwise it will be made from the server you
+	are attached to.
+
+
+	To use the default port with \userliteral{source}, specify 0 for
+	\userliteral{port}.
+
+
+\subsection{SQUIT}
+
+\command{SQUIT}
+    \userliteral{server} [\userliteral{reason}]
+
+	Closes down the link to \userliteral{server} from this side of the
+	network. If \userliteral{reason} is given, it will be sent out in
+	the server notices on both sides of the link.
+
+
+\subsection{REHASH}
+
+\command{REHASH}
+[\literal{CONFIG | BANS | DNS | MOTD | OMOTD | TKLINES | TDLINES | TXLINES |
+TRESVS | REJECTCACHE | HELP}] [\userliteral{server}]
+
+	With no parameter given, CONFIG, MOTD, and OMOTD will be rehashed. The
+	\userliteral{server} argument is a wildcard match of server names.
+
+
+{\sc Parameters}
+\nopagebreak
+
+\noindent
+\begin{description}
+\item[{CONFIG}]
+	Rereads \nolinkurl{ircd.conf}
+
+\item[{BANS}]
+	Rereads the ban database.
+
+\item[{DNS}]
+	Reread \nolinkurl{/etc/resolv.conf}.
+
+\item[{MOTD}]
+	Reload the MOTD file
+
+\item[{OMOTD}]
+	Reload the operator MOTD file
+
+\item[{TKLINES}]
+	Clears temporary K:lines.
+
+\item[{TDLINES}]
+	Clears temporary D:lines.
+
+\item[{TXLINES}]
+	Clears temporary X:lines.
+
+\item[{TRESVS}]
+	Clears temporary reservations.
+
+\item[{REJECTCACHE}]
+	Clears the client rejection cache.
+
+\item[{HELP}]
+	Refreshes the help system cache.
+\end{description}
+
+\subsection{RESTART}
+
+\command{RESTART}
+    \userliteral{server}
+
+	Cause an immediate total shutdown of the IRC server, and restart from
+	scratch as if it had just been executed.
+
+	This reexecutes the ircd using the compiled-{}in path, visible as SPATH
+	in INFO.
+
+
+\subsection{DIE}
+
+\command{DIE} \userliteral{server}
+
+	Immediately terminate \userliteral{server}, after sending notices to all
+	connected clients and servers
+
+
+\subsection{SET}
+
+\command{SET} [\literal{ADMINSTRING | AUTOCONN | AUTOCONNALL | FLOODCOUNT |
+IDENTTIMEOUT | MAX | OPERSTRING | SPAMNUM | SPAMTIME | SPLITMODE | SPLITNUM |
+SPLITUSERS}] \userliteral{value}
+
+The SET command sets a runtime-{}configurable value.
+
+	Most of the \nolinkurl{ircd.conf} equivalents have a default\_ prefix
+	and are only read on startup. SET is the only way to change these at
+	run time.
+
+	Most of the values can be queried by omitting \userliteral{value}.
+
+
+\noindent
+\begin{description}
+\item[{ADMINSTRING}]
+	Sets string shown in WHOIS for admins. (umodes +o and +a set, umode +S
+	not set).
+
+\item[{AUTOCONN}]
+	Sets auto-{}connect on or off for a particular server. Takes two
+	parameters, server name and new state.
+
+	To see these values, use /stats c. Changes to this are lost on a
+	rehash.
+
+\item[{AUTOCONNALL}]
+	Globally sets auto-{}connect on or off. If disabled, no automatic
+	connections are done; if enabled, automatic connections are done
+	following the rules for them.
+
+\item[{FLOODCOUNT}]
+	The number of lines allowed to be sent to a connection before
+	throttling it due to flooding. Note that this variable is used for both
+	channels and clients.
+
+	For channels, op or voice overrides this; for users, IRC operator
+	status or op or voice on a common channel overrides this.
+
+\item[{IDENTTIMEOUT}]
+	Timeout for requesting ident from a client.
+
+\item[{MAX}]
+	Sets the maximum number of connections to \userliteral{value}.
+
+	This number cannot exceed maxconnections -{} MAX\_BUFFER.
+	maxconnections is the rlimit for number of open files. MAX\_BUFFER is
+	defined in config.h, normally 60.
+
+	MAXCLIENTS is an alias for this.
+
+\item[{OPERSTRING}]
+	Sets string shown in WHOIS for opers (umode +o set, umodes +a and +S
+	not set).
+
+\item[{SPAMNUM}]
+	Sets how many join/parts to channels constitutes a possible spambot.
+
+\item[{SPAMTIME}]
+	Below this time on a channel
+	counts as a join/part as above.
+
+\item[{SPLITMODE}]
+	Sets splitmode to \userliteral{value}:
+\noindent
+\begin{description}
+\item[{ON}]
+	splitmode is permanently on
+
+\item[{OFF}]
+	splitmode is permanently off (default if no\_create\_on\_split and
+	no\_join\_on\_split are disabled)
+
+\item[{AUTO}]
+	ircd chooses splitmode based on SPLITUSERS and SPLITNUM (default if
+	no\_create\_on\_split or no\_join\_on\_split are enabled)
+\end{description}
+
+\item[{SPLITUSERS}]
+	Sets the minimum amount of users needed to deactivate automatic
+	splitmode.
+
+\item[{SPLITNUM}]
+	Sets the minimum amount of servers needed to deactivate automatic
+	splitmode. Only servers that have finished bursting count for this.
+\end{description}
+
+\section{User management commands}
+\label{usercommands}
+
+\subsection{KILL}
+
+\command{KILL}
+    \userliteral{nick} [\userliteral{reason}]
+
+	Disconnects the user with the given nick from the server they are
+	connected to, with the reason given, if present, and broadcast a server
+	notice announcing this.
+
+	Your nick and the reason will appear on channels.
+
+
+\subsection{CLOSE}
+
+\command{CLOSE}
+
+	Closes all connections from and to clients and servers who have not
+	completed registering.
+
+
+\subsection{KLINE}
+
+\command{KLINE}
+    [\userliteral{length}]
+    [\userliteral{user}@\userliteral{host} |
+     \userliteral{user}@\userliteral{a.b.c.d}]
+    [\literal{ON} \userliteral{servername}] [\userliteral{reason}]
+
+	Adds a K:line to \nolinkurl{kline.conf} to ban the given user@host from
+	using that server.
+
+	If the optional parameter \userliteral{length} is given, the K:line will
+	be temporary (i.e. it will not be stored on disk) and last that long in
+	minutes.
+
+	If an IP address is given, the ban will be against all hosts matching
+	that IP regardless of DNS. The IP address can be given as a full
+	address (192.168.0.1), as a CIDR mask (192.168.0.0\slash24), or as a
+	glob (192.168.0.*).
+
+	All clients matching the K:line will be disconnected from the server
+	immediately.
+
+	If a reason is specified, it will be sent to the client when they are
+	disconnected, and whenever a connection is attempted which is banned.
+
+
+	If the ON part is specified, the K:line is set on servers matching the
+	given mask (provided a matching shared\{\} block exists there).
+	Otherwise, if specified in a cluster\{\} block, the K:Line will be
+	propagated across the network accordingly.
+
+
+\subsection{UNKLINE}
+
+\command{UNKLINKE}
+    \userliteral{user}\literal{@}\userliteral{host}
+    [\literal{ON} \userliteral{servername}]
+
+	Will attempt to remove a K:line matching user@host from
+	\nolinkurl{kline.conf}, and will flush a temporary K:line.
+
+
+\subsection{XLINE}
+\label{XLINES}
+
+\command{XLINE}
+    [\userliteral{length}] \userliteral{mask}
+    [\literal{ON} \userliteral{servername}]
+    [\literal{:}userliteral{reason}]
+
+	Works similarly to KLINE, but matches against the real name field. The
+	wildcards are * (any sequence), ? (any character), \# (a digit) and @
+	(a letter); wildcard characters can be escaped with a backslash. The
+	sequence \textbackslash{}s matches a space.
+
+	All clients matching the X:line will be disconnected from the server
+	immediately.
+
+	The reason is never sent to users. Instead, they will be exited with
+	`Bad user info'.
+
+	If the ON part is specified, the X:line is set on servers matching the
+	given mask (provided a matching shared\{\} block exists there).
+	Otherwise, if specified in a cluster\{\} block, the X:line will be
+	propagated across the network accordingly.
+
+
+\subsection{UNXLINE}
+
+\command{UNXLINE}
+    \userliteral{mask} [\literal{ON} \userliteral{servername}]
+
+	Will attempt to remove an X:line from \nolinkurl{xline.conf}, and will
+	flush a temporary X:line.
+
+
+\subsection{RESV}
+
+\command{RESV}
+    [\userliteral{length}] [\userliteral{channel} | \userliteral{mask}]
+    [\literal{ON} \userliteral{servername}] [\literal{:}\userliteral{reason}]
+
+	If used on a channel, `jupes' the channel locally. Joins to the
+	channel will be disallowed and generate a server notice on +y, and
+	users will not be able to send to the channel. Channel jupes cannot
+	contain wildcards.
+
+	If used on a nickname mask, prevents local users from using a nick
+	matching the mask (the same wildcard characters as xlines). There is
+	no way to exempt the initial nick from this.
+
+	In neither case will current users of the nick or channel be kicked or
+	disconnected.
+
+	This facility is not designed to make certain nicks or channels
+	oper-{}only.
+
+	The reason is never sent to users.
+
+	If the ON part is specified, the resv is set on servers matching the
+	given mask (provided a matching shared\{\} block exists there).
+	Otherwise, if specified in a cluster\{\} block, the resv will be
+	propagated across the network accordingly.
+
+
+\subsection{UNRESV}
+
+\command{UNRESV}
+    [\userliteral{channel} | \userliteral{mask}]
+    [\literal{ON} \userliteral{servername}]
+
+	Will attempt to remove a resv from \nolinkurl{resv.conf}, and will
+	flush a temporary resv.
+
+
+\subsection{DLINE}
+
+\command{DLINE}
+    [\userliteral{length}] \userliteral{a.b.c.d}
+    [\literal{ON} \userliteral{servername}] [\literal{:}\userliteral{reason}]
+
+	Adds a D:line to \nolinkurl{dline.conf}, which will deny any
+	connections from the given IP address. The IP address can be given as a
+	full address (192.168.0.1) or as a CIDR mask (192.168.0.0\slash24).
+
+	If the optional parameter \userliteral{length} is given, the D:line
+	will be temporary (i.e. it will not be stored on disk) and last that
+	long in minutes.
+
+	All clients matching the D:line will be disconnected from the server
+	immediately.
+
+	If a reason is specified, it will be sent to the client when they are
+	disconnected, and, if dline\_reason is enabled, whenever a connection
+	is attempted which is banned.
+
+	D:lines are less load on a server, and may be more appropriate if
+	somebody is flooding connections.
+
+
+	If the ON part is specified, the D:line is set on servers matching the
+	given mask (provided a matching shared\{\} block exists there, which is
+	not the case by default). Otherwise, the D:Line will be set on the
+	local server only.
+
+
+	Only exempt\{\} blocks are exempt from D:lines. Being a server or having
+	kline\_exempt in auth\{\} does \emph{not} exempt (different from
+	K/G/X:lines).
+
+
+\subsection{UNDLINE}
+
+\command{UNDLINE}
+    \userliteral{a.b.c.d} [\literal{ON} \userliteral{servername}]
+
+	Will attempt to remove a D:line from \nolinkurl{dline.conf}, and will
+	flush a temporary D:line.
+
+
+\subsection{TESTGECOS}
+
+\command{TESTGECOS}
+    \userliteral{gecos}
+
+	Looks up X:Lines matching the given gecos.
+
+
+\subsection{TESTLINE}
+
+\command{TESTLINE}
+    [\userliteral{nick}!]
+    [\userliteral{user}\literal{@}\userliteral{host} | \userliteral{a.b.c.d}]
+
+	Looks up the given hostmask or IP address and reports back on any
+	auth\{\} blocks, D: or K: lines found. If \userliteral{nick} is
+	given, also searches for nick resvs.
+
+
+	For temporary items the number of minutes until the item expires
+	is shown (as opposed to the hit count in STATS q/Q/x/X).
+
+
+	This command will not perform DNS lookups; for best
+	results you must testline a host and its IP form.
+
+
+\subsection{TESTMASK}
+
+\command{TESTMASK}
+    \userliteral{hostmask} [\userliteral{gecos}]
+
+	Searches the network for users that match the hostmask and gecos given,
+	returning the number of matching users on this server and other
+	servers.
+
+	The \userliteral{hostmask} is of the form user@host or user@ip/cidr
+	with * and ? wildcards, optionally preceded by nick!.
+
+	The \userliteral{gecos} field accepts the same wildcards as
+	\hyperref[XLINES]{xlines}.
+
+	The IP address checked against is 255.255.255.255 if the IP address is
+	unknown (remote client on a TS5 server) or 0.0.0.0 if the IP address is
+	hidden (auth\{\} spoof).
+
+
+\subsection{LUSERS}
+
+\command{LUSERS}
+    [\userliteral{mask}] [\userliteral{nick} | \userliteral{server}]
+
+	Shows various user and channel counts.
+
+
+	The \userliteral{mask} parameter is obsolete but must be used when
+	querying a remote server.
+
+
+\subsection{TRACE}
+
+\command{TRACE}
+    [\userliteral{server} | \userliteral{nick}] [\userliteral{location}]
+
+	With no argument or one argument which is the current server,
+	TRACE gives a list of all connections to the current server
+	and a summary of connection classes.
+
+
+	With one argument which is another server, TRACE displays the path
+	to the specified server, and all servers, opers and -{}i users
+	on that server, along with a summary of connection classes.
+
+
+	With one argument which is a client, TRACE displays the
+	path to that client, and that client's information.
+
+
+	If location is given, the command is executed on that server;
+	no path is displayed.
+
+
+	When listing connections, type, name and class is shown
+	in addition to information depending on the type:
+
+
+{\sc TRACE types}
+\nopagebreak
+
+\noindent
+\begin{description}
+\item[{Try.}]
+	A server we are trying to make a TCP connection to.
+
+\item[{H.S.}]
+	A server we have established a TCP connection to, but is not
+	yet registered.
+
+\item[{????}]
+	An incoming connection that has not yet registered as a user or a
+	server (`unknown'). Shows the username, hostname, IP address and the
+	time the connection has been open. It is possible that the ident or DNS
+	lookups have not completed yet, and in any case no tildes are shown
+	here. Unknown connections may not have a name yet.
+
+\item[{User}]
+	A registered unopered user. Shows the username, hostname, IP address,
+	the time the client has not sent anything (as in STATS l) and the time
+	the user has been idle (from PRIVMSG only, as in WHOIS).
+
+\item[{Oper}]
+	Like User, but opered.
+
+\item[{Serv}]
+	A registered server. Shows the number of servers and users reached via
+	this link,who made this connection and the time the server has not sent
+	anything.
+
+\end{description}
+
+\subsection{ETRACE}
+
+\command{ETRACE}
+    [\userliteral{nick}]
+
+	Shows client information about the given target, or about all local
+	clients if no target is specified.
+
+
+\subsection{PRIVS}
+
+\command{PRIVS}
+    [\userliteral{nick}]
+
+	Displays effective operator privileges for the specified nick, or for
+	yourself if no nick is given. This includes all privileges from the
+	operator block, the name of the operator block and those privileges
+	from the auth block that have an effect after the initial connection.
+
+
+	The exact output depends on the server the nick is on, see the matching
+	version of this document. If the remote server does not support this
+	extension, you will not receive a reply.
+
+
+\subsection{MASKTRACE}
+
+\command{MASKTRACE}
+    \userliteral{hostmask} [\userliteral{gecos}]
+
+	Searches the local server or network for users that match the hostmask
+	and gecos given. Network searches require the oper\_spy privilege and
+	an '!' before the hostmask. The matching works the same way as
+	TESTMASK.
+
+	The \userliteral{hostmask} is of the form user@host or user@ip/cidr with
+	* and ? wildcards, optionally preceded by nick!.
+
+	The \userliteral{gecos} field accepts the same wildcards as
+	\hyperref[XLINES]{xlines}.
+
+	The IP address field contains 255.255.255.255 if the IP address is
+	unknown (remote client on a TS5 server) or 0 if the IP address is
+	hidden (auth\{\} spoof).
+
+
+\subsection{CHANTRACE}
+
+\command{CHANTRACE}
+    \userliteral{channel}
+
+	Displays information about users in a channel. Opers with the
+	oper\_spy privilege can get the information without being on the
+	channel, by prefixing the channel name with an '!'.
+
+	The IP address field contains 255.255.255.255 if the IP address is
+	unknown (remote client on a TS5 server) or 0 if the IP address is
+	hidden (auth\{\} spoof).
+
+
+\subsection{SCAN}
+
+\command{SCAN UMODES}
+    \literal{+}\userliteral{modes}\literal{-}\userliteral{modes}
+    [\literal{no-{}list} | \literal{list}] [\literal{global}]
+    [\literal{list-{}max} \userliteral{number}]
+    [\literal{mask} \userliteral{nick!user@host}]
+
+	Searches the local server or network for users that have the umodes
+	given with + and do not have the umodes given with -{}.	no-{}list
+	disables the listing of matching users and only shows the count.
+
+	list enables the listing (default).
+
+	global extends the search to the entire network instead of local users
+	only. list-{}max limits the listing of matching users to the given
+	amount.	mask causes only users matching the given nick!user@host mask
+	to be selected. Only the displayed host is considered, not the
+	IP address or real host behind dynamic spoofs.
+
+
+	The IP address field contains 255.255.255.255 if the IP address
+	is unknown (remote client on a TS5 server) or 0 if the IP address
+	is hidden (auth\{\} spoof).
+
+
+	Network searches where a listing is given are operspy commands.
+
+
+\subsection{CHGHOST}
+
+\command{CHGHOST}
+    \userliteral{nick} \userliteral{value}
+
+	Set the hostname associated with a particular nick for the duration of
+	this session.
+
+
+\subsection{FORCEJOIN}
+
+\command{FORCEJOIN}
+    \userliteral{nick} \userliteral{channel}
+
+           Force a user to join a channel.
+
+\notebox{Note}{
+           This requires extensions/m\_forcejoin.so.
+}
+
+
+\subsection{FORCENICK}
+
+\command{FORCENICK}
+    \userliteral{current-{}nick} \userliteral{new-{}nick}
+
+           Forcibly change a user's nick.
+
+\notebox{Note}{
+           This requires extensions/m\_forcenick.so.
+}
+
+
+\subsection{FORCEPART}
+
+\command{FORCEPART}
+    \userliteral{nick} \userliteral{channel}
+
+           Force a user to part a channel.
+
+\notebox{Note}{
+           This requires extensions/m\_forcepart.so.
+}
+
+
+\subsection{FORCEQUIT}
+
+\command{FORCEQUIT}
+    \userliteral{nick} \userliteral{reason}
+
+           Force a user to quit.
+
+\notebox{Note}{
+           This requires extensions/m\_forcequit.so.
+}
+
+
+\section{Miscellaneous commands}
+\label{misccommands}
+
+\subsection{ADMIN}
+
+\command{ADMIN}
+    [\userliteral{nick} | \userliteral{server}]
+
+	Shows the information in the admin\{\} block.
+
+
+\subsection{INFO}
+
+\command{INFO}
+    [\userliteral{nick} | \userliteral{server}]
+
+	Shows information about the authors of the IRC server, and
+	some information about this server instance.
+	Opers also get a list of configuration options.
+
+
+\subsection{TIME}
+
+\command{TIME}
+    [\userliteral{nick} | \userliteral{server}]
+
+	Shows the local time on the given server, in a human-{}readable format.
+
+
+\subsection{VERSION}
+
+\command{VERSION}
+    [\userliteral{nick} | \userliteral{server}]
+
+	Shows version information, a few compile/config options,
+	the SID and the 005 numerics.
+	The 005 numeric will be remapped to 105 for remote requests.
+
+
+\subsection{STATS}
+
+\command{STATS}
+    [\userliteral{type}] [\userliteral{nick} | \userliteral{server}]
+
+	Display various statistics and configuration information.
+
+
+{\sc Values for \userliteral{type}}
+\nopagebreak
+
+\noindent
+\begin{description}
+\item[{A}]
+	Show DNS servers
+
+\item[{b}]
+	Show active nick delays
+
+\item[{B}]
+	Show hash statistics
+
+\item[{c}]
+	Show connect blocks
+
+\item[{d}]
+	Show temporary D:lines
+
+\item[{D}]
+	Show permanent D:lines
+
+\item[{e}]
+	Show exempt blocks (exceptions to D:lines)
+
+\item[{E}]
+	Show events
+
+\item[{f}]
+	Show file descriptors
+
+\item[{h}]
+	Show hub\_mask/leaf\_mask
+
+\item[{i}]
+	Show auth blocks, or matched auth blocks
+
+\item[{k}]
+	Show temporary K:lines, or matched K:lines
+
+\item[{K}]
+	Show permanent K:lines, or matched K:lines
+
+\item[{l}]
+	Show hostname and link information about the given nick. With a server
+	name, show information about opers and servers on that server; opers
+	get information about all local connections if they query their own
+	server. No hostname is shown for server connections.
+
+\item[{L}]
+	Like l, but show IP address instead of hostname
+
+\item[{m}]
+	Show commands and their usage statistics (total counts, total bytes,
+	counts from server connections)
+
+\item[{n}]
+	Show blacklist blocks (DNS blacklists) with hit counts since last
+	rehash and (parenthesized) reference counts. The reference count shows
+	how many clients are waiting on a lookup of this blacklist or have been
+	found and are waiting on registration to complete.
+
+\item[{o}]
+	Show operator blocks
+
+\item[{O}]
+	Show privset blocks
+
+\item[{p}]
+	Show logged on network operators which are not set AWAY.
+
+\item[{P}]
+	Show listen blocks (ports)
+
+\item[{q}]
+	Show temporarily resv'ed nicks and channels with hit counts
+
+\item[{Q}]
+	Show permanently resv'ed nicks and channels with hit counts since last
+	rehash bans
+
+\item[{r}]
+	Show resource usage by the ircd
+
+\item[{t}]
+	Show generic server statistics about local connections
+
+\item[{u}]
+	Show server uptime
+
+\item[{U}]
+	Show shared (c), cluster (C) and service (s) blocks
+
+\item[{v}]
+	Show connected servers and brief status
+
+\item[{x}]
+	Show temporary X:lines with hit counts
+
+\item[{X}]
+	Show permanent X:lines with hit counts since last rehash bans
+
+\item[{y}]
+	Show class blocks
+
+\item[{z}]
+	Show memory usage statistics
+
+\item[{Z}]
+	Show ziplinks statistics
+
+\item[{?}]
+	Show connected servers and link information about them
+\end{description}
+
+\subsection{WALLOPS}
+
+\command{WALLOPS}
+    \literal{:}\userliteral{message}
+
+	Sends a WALLOPS message to all users who have the +w umode set. This is
+	for things you don't mind the whole network knowing about.
+
+
+\subsection{OPERWALL}
+
+\command{OPERWALL}
+    \literal{:}\userliteral{message}
+
+	Sends an OPERWALL message to all opers who have the +z umode set. +z is
+	restricted, OPERWALL should be considered private communications.
