@@ -18,17 +18,17 @@ NO PARAMETERS:
      +r     - Registered users only.  Only users identified to services
               may join.
    ? +c     - No color.  All color codes in messages are stripped.
-     +d     - No nickchanges. People on the channel will not be able to
+     +N     - No nickchanges. People on the channel will not be able to
               change nick.
-     +g     - Free invite.  Everyone may invite users.  Significantly
+     +A     - Free invite.  Everyone may invite users.  Significantly
               weakens +i control.
      +z     - Op moderated.  Messages blocked by +m, +b and +q are instead
               sent to ops.
-   * +L     - Large ban list.  Increase maximum number of +beIq entries.
+   * +E     - Large ban list.  Increase maximum number of +beIq entries.
    * +P     - Permanent.  Channel does not disappear when empty.
      +F     - Free target.  Anyone may set forwards to this (otherwise
               ops are necessary).
-     +Q     - Disable forward.  Users cannot be forwarded to the channel
+     +D     - Disable forward.  Users cannot be forwarded to the channel
               (however, new forwards can still be set subject to +F).
    ? +C     - Disable CTCP. All CTCP messages to the channel, except ACTION,
               are disallowed.
@@ -43,14 +43,12 @@ NO PARAMETERS:
               be set by admins regardless of channel status. Can only be
               set by admins.
   ?* +O     - Oper only channel. Only opers will be able to join.
-  ?* +A     - Admin only channel. Only admins will be able to join.
+  ?* +W     - Admin only channel. Only admins will be able to join.
               Can only be set by admins.
    ? +S     - SSL only channel. Only clients connected via SSL may join.
-   ? +N     - Allow roleplay commands.
-   * +W     - Allow the censor list to be manipulated.
 
 WITH PARAMETERS:
-   ? +y     - Manipulate the censor list. Requires +W to be set on the channel.
+   ? +g     - Manipulate the censor list. Requires +W to be set on the channel.
               The censor list takes a glob pattern similar to a ban to match
               phrases. If it matches, the phrase will be blocked.
      +f     - Forward.  Forwards users who cannot join because of +i,
