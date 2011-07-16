@@ -1,0 +1,6 @@
+FORCENICK <nick> <newnick>
+
+-- Forces a user to change nick. The user will be notified via a server notice
+   that you have changed their nickname.
+
+Requires oper priv: oper:local_force oper:global_force

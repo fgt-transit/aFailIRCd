@@ -1,0 +1,97 @@
+aFailIRCd INSTALL document
+
+Copyright (c) 2001 by ircd-hybrid team
+Copyright (c) 2002-2004 ircd-ratbox development team
+Copyright (c) 2005-2008 charybdis development team
+Copyright (c) 2010 by ShadowIRCd development team
+Copyright (c) 2010 by SporksIRCD development team
+Copyright (c) 2011 by aFailIRCd development team
+
+===============================================================================
+HOW TO BUILD:
+
+1) Read the NEWS file to find out about the exciting new features in this
+   version. Other good reads are doc/example.conf, and README.FIRST.
+
+2) Run the configure script. It will create include/setup.h and the Makefiles
+   to match your system. Paths are handled with the --prefix option to
+   to configure. $HOME/ircd is the default if no prefix is specified.
+
+   Note: There are some special optional parameters to the configure script
+   that some admins may wish to use.
+
+   * --enable-kqueue - Use the superior kqueue(2) system call as opposed to the
+     default poll(2). This is available on modern NetBSD, FreeBSD, and OpenBSD.
+
+   * --enable-devpoll - Enable the superior /dev/poll support on Solaris.
+
+   * --enable-epoll - Enable the superior Linux Edge-Triggered Polling system.
+     This is currently only available on 2.5 Linux kernel versions or later.
+
+   * --enable-openssl - Enable the openssl dependent crypto functions. This
+     will allow CHALLENGE to work and encrypted links, among other things. On
+     systems where the configure script can automatically detect OpenSSL, this
+     option is not necessary. If configure cannot find OpenSSL, you must
+     specify a path with this option (--enable-openssl=/path/to/openssl)
+
+   * --enable-ipv6 - Enable IPv6 support. This will be the default in the near
+     future.
+
+   * --disable-assert - Disable some of the debugging code. This should be used
+     on all production servers for maximum speed and to prevent cores from
+     things that shouldn't normally happen.
+
+   * --enable-small-net - Tunes the server for smaller networks by reducing the
+     startup memory footprint. This should really only be used for *small*
+     networks (< 500 users), as this tends to be a performance hit on larger
+     networks.
+
+   * --with-nicklen=LENGTH - Sets the maximum NICK length. Note that this must
+     be consistent across your entire network.
+
+   * --with-topiclen=LENGTH - Sets the maximum TOPIC length. Note that this
+     must be consistent across your entire network.
+
+3) make should build ircd.
+
+4) make install will install the server, modules, and tools in the prefix
+   specified when configure was run.
+
+5) If you wish to enable the user log, oper log, and failed oper log, issue
+   these commands at the shell prompt (in the prefix directory):
+
+   $ touch logs/userlog
+   $ touch logs/operlog
+   $ touch logs/foperlog
+
+   Note: If you use different names in ircd.conf, you must 'touch' the specific
+   names.
+
+===============================================================================
+HOW TO GET HELP
+
+The best way to get help regarding bugs and such is by asking on our IRC
+channel which is at irc://irc.sporksirc.net/#sporksircd.
+
+===============================================================================
+NOTES
+
+The best way to get a backtrace of the core is to follow this sequence of
+instructions:
+
+1) Change to the directory containing the core file
+
+2) Run gdb on the binary and the core file. With an unmodified SporksIRCD
+   installation, an example command line is below (in the $HOME/ircd
+   directory):
+
+   $ gdb bin/ircd ircd.core
+
+3) At the "(gdb)" prompt, enter the command "bt"
+
+4) Save the output of the backtrace command to a pastebin of some sort (such as
+   http://slexy.org) and give it to us on our IRC channel.
+
+5) Be sure to save the ircd binary, the modules, and the core file in a safe
+   place in case the developers need to look deeper than a backtrace provides.
+

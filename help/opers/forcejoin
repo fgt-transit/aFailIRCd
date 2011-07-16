@@ -1,0 +1,6 @@
+FORCEJOIN <nick> <#channel>
+
+-- Forces a user to join the specified channel. This also accepts a
+   comma-separated list of channels.
+
+Requires oper priv: oper:local_force oper_global_force

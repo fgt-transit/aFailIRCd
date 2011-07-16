@@ -1,0 +1,5 @@
+UNGRANT <nick>
+
+Remove operator status from a given user.
+
+- Requires Oper Priv: grant

@@ -1,0 +1,13 @@
+CHGFLAGS <nick> <flags>
+
+Changes the given user's auth {} block flags on-the-fly. Normally changing them
+would require a reconnect of the client. Note, however, all changes will go
+away when the client reconnects. To make them permanent, you should create an
+auth {} block for the user in ircd.conf.
+
+For more information on what the flags do, see reference.conf.
+
+Supported flags: kline_exempt spambot_exempt shide_exempt jupe_exempt
+                 resv_exempt flood_exempt
+
+- Requires Oper Priv: grant

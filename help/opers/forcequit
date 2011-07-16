@@ -1,0 +1,6 @@
+FORCEQUIT <nick> :<reason>
+
+-- Forces a user to quit with the given reason. The user will not be notified
+   that you have done this.
+
+Requires oper priv: oper:local_force oper:global_force

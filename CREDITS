@@ -1,0 +1,69 @@
+===============================================================================
+aFailIRCd is SporksIRCD with edits to satisfy the needs of UnrealIRCd
+and InspIRCd users, without the bugs and bloat of an InspIRCd server and
+the insanity of an UnrealIRCd server.
+ 
+Below is the aFailIRCd development team listed in alphabetical order:
+ 
+cooper, Mitchell Cooper <cooper -at- notroll.net>
+mac-mini, Kyle Paranoid <mac-mini -at- mac-mini.org>
+AstroTurf, Fgtbus Driver <driver -at- fgt-transit.com>
+
+aFailIRCd continues to pull changes from SporksIRCD, ShadowIRCd, and
+Charybdis. See below for credits.
+ 
+===============================================================================
+SporksIRCD is a fork of ShadowIRCD with features that are required by
+SporksNet, with an emphasis on clean code. 
+ 
+The SporksIRCD team is listed in nick-alphabetical order:
+ 
+awilcox, Andrew R. Wilcox, <awilcox -at- wilcox-tech.com>, project deputy
+Elizabeth, Elizabeth J. Myers, <elizabeth -at- sporksirc.net>, head of project
+lstarnes, Lee T. Starnes, <lstarnes -at- sporksirc.net>, project deputy
+miniCruzer, Samuel J. Hoffman, <minicruzer -at- live.com>, contributor
+ 
+===============================================================================
+ShadowIRCd 6 is a modern restart of the old ShadowIRCd project
+based on Charybdis with a few additional features to make it appeal 
+more to more users. We try to work as closely as possible with the 
+Charybdis team.
+ 
+The ShadowIRCd team is listed in nick-alphabetical order:
+ 
+jdhore, JD Horelick <jdhore1 -at- gmail.com>
+Taros, Brett Greenham <taros34 -at- hotmail.com>
+ 
+Some ShadowIRCd 6 features such as the oper-override and remote
+RESTART, DIE and MOD* commands were borrowed from ircd-seven.
+ 
+ircd-seven is written by:
+ 
+spb, Stephen Bennett <spb -at- attenuate.org>
+ 
+===============================================================================
+Charybdis started as an evolution from ircd-ratbox. Its development
+is led by a team of dedicated developers who have put a lot of time
+into the project, and it has seen use on a variety of different
+network configurations.
+ 
+The charybdis core team is listed in nick-alphabetical order:
+ 
+jilles, Jilles Tjoelker <jilles -at- stack.nl>
+nenolod, William Pitcock <nenolod -at- nenolod.net>
+spb, Stephen Bennett <spb -at- attenuate.org>
+ 
+The following people have made contributions to the Charybdis releases,
+in nick-alphabetical order:
+ 
+AndroSyn, Aaron Sethman <androsyn -at- ratbox.org>
+anfl, Lee Hardy <lee -at- leeh.co.uk>
+beu, Elfyn McBratney <elfyn.mcbratney -at- gmail.com>
+dwr, Valery Yatsko <dwr -at- shadowircd.net> 
+Entrope, Michael Poole <mdpoole -at- trolius.org> 
+gxti, Michael Tharp <gxti -at- partiallystapled.com>
+jdhore, JD Horelick <jdhore1 -at- gmail.com>
+mr_flea, Keith Buck <mr_flea -at- esper.net>
+ThaPrince, Jon Christopherson <jon -at- vile.com>
+twincest, River Tarnell <river -at- attenuate.org>
+w00t, Robin Burchell <surreal.w00t -at- gmail.com>

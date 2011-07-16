@@ -1,0 +1,123 @@
+This directory contains extensions (modules) to SporksIRCD that have been
+contributed by other people, or written by our development
+team. Unsupported extensions live under unsupported/.
+
+
+Modules
+-------
+
+createauthonly.c	- Only allow authenticated (identified) users to create
+			  channels.
+
+chm_nocolour.c	- Colour stripping in channels
+
+chm_noctcp.c	- Block CTCP's sent to the channel
+
+chm_nonotices.c	- Block notices sent to the channel
+
+chm_norepeat.c	- Block repeat messages to the channel
+
+
+ip_cloaking.c	- Cloak (spoof) the host for users that have umode +x.
+
+m_adminwall.c	- Sends a message to all admins network-wide (umode +a)
+                 Syntax: ADMINWALL :<message>
+
+m_cycle		- Server-side /CYCLE (also called /HOP in some clients/servers).
+		  Syntax: CYCLE <#channel>
+
+m_findforwards.c	- Find channels that forward (+f) to a given channel.
+			  Syntax: FINDFORWARDS <channel>
+
+m_forcejoin.c	- Allows opers to FORCEJOIN users to any channel they
+		  so desire, regardless of bans or restricting modes
+		  that may be keeping them out. Similar to the SAJOIN
+		  command in other ircds.
+		  Syntax: FORCEJOIN <user> <channel>
+
+m_forcenick.c	- Alows opers to forcibly change users' nicknames.
+		  Similar to the SANICK command in other ircds.
+		  Syntax: FORCENICK <user> <new-nick>
+
+m_forcepart.c	- Allows opers to FORCEPART users from any channel they
+		  so desire.  Similar to the SAPART command in other ircds.
+		  Syntax: FORCEPART <user> <channel> :<message>
+
+m_forcequit.c	- Allows opers to FORCEQUIT users from the network.
+		  Similar to the SAQUIT command in other ircds.
+		  Syntax: FORCEQUIT <user> :<message>
+
+m_identify.c	- Identifies to NickServ or ChanServ
+		  Syntax: IDENTIFY [nick|channel] <password>
+
+m_mkpasswd.c	- MKPASSWD - generate a SHA512, SHA256, or MD5
+		  encryption of a password
+		  Syntax:  MKPASSWD <plaintext> [SHA512|SHA256|MD5]
+
+m_oaccept.c	- OACCEPT - Add metadata to a user that will allow you to
+		  message them even if they are +gGR.
+		  Syntax: OACCEPT <nick>
+
+m_ojoin.c	- OJOIN - Join a channel through any modes or limits with 
+		  an optional status (!@%+)
+		  Syntax: OJOIN [status]<channel>
+
+m_olist.c	- OLIST - Lists channels like LIST, but shows hidden
+		  channels. Oper only of course.
+
+m_opme.c	- OPME - Allows an admin to op themselves in an opless channel
+		  Syntax: OPME <channel>
+
+m_omode.c	- OMODE - Allows an admin to do all sorts of evil upon a
+		  channel, sets modes with extreme prejudice
+
+m_okick.c	- OKICK - Allows an oper to kick a user from a channel
+		  regardless of if they have ops or not.
+		  Syntax: OKICK <channel> <nick> :<message>
+
+m_roleplay.c	- ROLEPLAY - Allows a variety of roleplaying commands.
+
+override.c	- Adds umode +p, allowing overriding bans and modehacking.
+		  requires the oper::override privilege.
+
+no_oper_invis.c	- Disallow opers setting marking themselves as invisible
+                  (+i) unless they have the hidden_oper flag.
+
+example_module.c	- An example module to be used for creating your own.
+			  Syntax: TEST
+
+
+Spy Modules
+-----------
+
+The following are the 'spy' parts, accessible via the +y snomask
+
+spy_admin_notice.c	- Spy on clients doing ADMIN
+spy_info_notice.c	- Spy on clients doing INFO
+spy_links_notice.c	- Spy on clients doing LINKS
+spy_motd_notice.c	- Spy on clients doing MOTD
+spy_stats_notice.c	- Spy on clients doing all STATS
+spy_stats_p_notice.c	- Spy on clients doing STATS p only
+spy_trace_notice.c	- Spy on clients doing TRACE
+
+Note: if you have both spy_stats_notice.c and spy_stats_p_notice.c loaded
+you will get two messages.
+
+Snomask Modules
+---------------
+
+sno_farconnect.c	- Remote client connect/exit notices (snomask +F)
+sno_globalkline.c	- Global K/D/X-line activation notices
+sno_globaloper.c	- Global oper-up notices
+sno_whois.c		- Spy on clients who WHOIS you seeing idle time (snomask +W).
+
+Extban Modules
+--------------
+
+extb_account.so  - Account bans (+b $a[:mask])
+extb_canjoin.so  - Banned from another channel (+b $j:mask)
+extb_channel.so  - Other-channel bans (+b $c:mask)
+extb_extgecos.so - Extended ban (+b $x:mask)
+extb_oper.so     - Oper bans (+b $o)
+extb_realname.so - Realname (gecos) bans (+b $r:mask)
+extb_server.so   - Server bans (+b $s:mask)

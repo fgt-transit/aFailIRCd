@@ -1,0 +1,10 @@
+GRANT <nick> <privset>
+
+Grants the given user the set of privileges specified by privset. Note that
+this requires the oper:grant privilege.
+
+Any privileges granted by GRANT will be lost when the user disconnects. Users
+can also still regain oper if their oper block is in effect. It is highly
+advised, therefore, that this only be used as a temporary or transient measure.
+
+- Requires Oper Priv: grant

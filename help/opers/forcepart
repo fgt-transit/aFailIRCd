@@ -1,0 +1,6 @@
+FORCEPART <nick> <#channel>
+
+-- Forces a user to part the specified channel. This also accepts a
+   comma-separated list of channels.
+
+Requires oper priv: oper:local_force oper:global_force

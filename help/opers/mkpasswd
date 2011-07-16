@@ -1,0 +1,5 @@
+MKPASSWD <password> [BLOWFISH|SHA256|SHA512|MD5]
+
+-- This command allows you to hash a password for use in olines and other places.
+This command will output a hash (SHA512 by default, or Blowfish, SHA256, or MD5)
+that can be used in the password field of authblocks or for oline passwords.

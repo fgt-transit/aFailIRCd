@@ -1,0 +1,70 @@
+--- Licence ---
+Copyright (C) 2010-2011 Elizabeth J. Myers. All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this document, to deal in the document without restriction, including
+without limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the document, and to permit persons to whom
+the document is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the document.
+
+THE DOCUMENT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE DOCUMENT OR THE USE OR OTHER DEALINGS IN
+THE DOCUMENT.
+--- End licence ---
+
+
+
+Indent/spacing/alignment styles seem to differ greatly amongst projects. This
+is an attempt to give you a general idea of the right thing if you are coding
+for SporksIRCD.
+
+Remember: if you want to code with your own style, fine, but remember to run
+indent using the .indent.pro at the top level directory to make sure it's all
+properly formatted.
+
+The following guidelines are usually strongly preferred, in order of strength:
+
+* Use 8-space hard tabs. The only exception is for alignment.
+* Braces for functions, while/for constructs, and structs are always put on the
+  following line from the prototype. Only put the brace on the same line as the
+  prototype if you're doing some sort of assignment, like with arrays.
+* Make liberal use of whitespace. Don't make your code too dense. It's much
+  less worse to use too much whitespace than to use too little.
+* Wrap everything to 80 chars unless it's uglier to do so. Keep in mind that if
+  your statement is difficult to wrap or requires multiple lines to do one
+  thing, it's time to consider rewriting and rethinking what you're doing.
+* When wrapping functions, use as many tabs as possible to achieve alignment
+  closest to the first character after the first parenthesis in the function,
+  then use spaces to pad the rest. Example:
+	example_func("The quick brown fox jumps over the lazy dog", ptr1, ptr2,
+		     ptr3);
+* Copious amounts of comments should be used. Use /* */ style comments. // 
+  comments should be avoided. Look at some of the source code for an example of
+  how to appropriately do comments in a given situation.
+* Avoid using silly #if 0 constructs. Some legacy code still uses them, but try
+  to comment out blocks rather than wholesale #if 0'ing them, as that's ugly in
+  most editors.
+* Avoid abusing fallthrough too much. Only use fallthrough when it's obvious
+  what you're doing.
+* Switch blocks should be indented for each case, and each statement under
+  each case should be appropriately indented.
+* No superfluous semicolons at the end of brackets (I can't believe I actually
+  had to add this... heathens...).
+* If you find you have to contort yourself extremely awkwardly to follow this
+  style guide (and I don't mean having to fix your editor's behaviour), and
+  it's making the code completely unreadable to anyone, you may disregard the
+  rules. Only disregard the rules where it makes sense to.
+
+
+Hopefully this standard isn't simply ignored...
+
+-- Elizabeth J. Myers
+   31 December 2010
+

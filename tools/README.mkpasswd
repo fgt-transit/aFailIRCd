@@ -1,0 +1,30 @@
+mkpasswd.c documentation
+
+This is documentation for the updated mkpasswd.c included with a number
+of ircd, irc services, and non-IRC related programs
+
+This version of mkpasswd can create DES, Extended DES, Blowfish, and MD5
+passwords, with either randomly generated or user provided salts.  
+
+Options:
+-m Generate an MD5 password
+-b Generate a Blowfish password
+-l Specify a length for a random MD5 or Blowfish salt
+-r Specify a number of rounds for a Blowfish DES password
+   Blowfish: no more than 6 recommended, no less than 4 accepted
+-s Specify a salt, up to 16 characters for MD5, up to 22 for Blowfish
+-p Specify a plaintext password to use
+-? Get brief help
+-h Get extended help
+
+Without the presence of any parameters, it'll generate an MD5 password with
+a randomly generated salt.
+
+An MD5 salt consists of up to 16 (though most implementations limit you to
+8) alphanumeric characters (plus '.' and '/'),
+such as 'tGd' or 'J6d4dfG'.
+
+A Blowfish salt consists of up to 22 alphanumeric characters (plus '.' and
+'/').  Blowfish also specifies a number of rounds*, by default 4.
+
+* Blowfish's rounds parameter is a logarithm, not an integer value
