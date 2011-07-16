@@ -22,7 +22,7 @@ static unsigned int mymode;
 static int
 _modinit(void)
 {
-	mymode = cflag_add('A', chm_staff);
+	mymode = cflag_add('W', chm_staff);
 	if (mymode == 0)
 		return -1;
 
@@ -32,7 +32,7 @@ _modinit(void)
 static void
 _moddeinit(void)
 {
-	cflag_orphan('A');
+	cflag_orphan('W');
 }
 
 DECLARE_MODULE_AV1(chm_adminonly, _modinit, _moddeinit, NULL, NULL, adminonly_hfnlist, "$Revision$");
@@ -44,8 +44,7 @@ h_can_join(hook_data_channel *data)
 	struct Channel *chptr = data->chptr;
 
 	if((chptr->mode.mode & mymode) && !IsAdmin(source_p)) {
-		sendto_one_numeric(source_p, 519, "%s :Cannot join channel (+A) - you are not an IRC server administrator", chptr->chname);
+		sendto_one_numeric(source_p, 519, "%s :Cannot join channel (+W) - you are not an IRC server administrator", chptr->chname);
 		data->approved = ERR_CUSTOM;
 	}
 }
-
