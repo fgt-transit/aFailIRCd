@@ -1,0 +1,7 @@
+to use afailircd with atheme IRC services, you must use this patch
+to create a protocol module for afailircd.
+
+copy afailircd-atheme.patch to the main directory of your
+extracted atheme source and run the following command
+
+patch -p1 < afailircd-atheme.patch

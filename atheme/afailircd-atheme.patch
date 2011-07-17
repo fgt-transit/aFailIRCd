@@ -1,0 +1,187 @@
+diff -Nur old//include/phandler.h new//include/phandler.h
+--- old//include/phandler.h	2011-07-02 21:08:11.000000000 -0400
++++ new//include/phandler.h	2011-07-16 23:03:59.119794935 -0400
+@@ -62,6 +62,7 @@
+ #define PROTOCOL_SOLIDIRCD		18
+ #define PROTOCOL_NEFARIOUS		19
+ #define PROTOCOL_OFFICEIRC		20
++#define PROTOCOL_AFAILIRCD		21
+ 
+ #define PROTOCOL_OTHER			255
+ 
+diff -Nur old//include/protocol/afailircd.h new//include/protocol/afailircd.h
+--- old//include/protocol/afailircd.h	1969-12-31 19:00:00.000000000 -0500
++++ new//include/protocol/afailircd.h	2011-07-16 23:04:54.074671509 -0400
+@@ -0,0 +1,37 @@
++/*
++ * Copyright (C) 2005 William Pitcock, et al.
++ * Copyright (c) 2008 shadowircd Development Group
++ * Copyright (C) 2010 Elizabeth Jennifer Myers
++ * Copyright (C) 2011 afailircd development group
++ * Rights to this code are as documented in doc/LICENSE.
++ *
++ * This code contains the channel mode definitions for afailircd
++ *
++ */
++
++#ifndef AFAILIRCD_H
++#define AFAILIRCD_H
++
++/* Extended channel modes will eventually go here. */
++/* Note that these are involved in atheme.db file format */
++#define CMODE_NOCOLOR   0x00001000      /* hyperion +c */
++#define CMODE_REGONLY   0x00002000      /* hyperion +r */
++#define CMODE_OPMOD     0x00004000      /* hyperion +z */
++#define CMODE_FINVITE   0x00008000      /* hyperion +g (afailircd A) */
++#define CMODE_EXLIMIT   0x00010000      /* charybdis +L (afailircd E) */
++#define CMODE_PERM      0x00020000      /* charybdis +P */
++#define CMODE_FTARGET   0x00040000      /* charybdis +F */
++#define CMODE_DISFWD    0x00080000      /* charybdis +Q (afailircd D) */
++#define CMODE_NOCTCP    0x00100000      /* charybdis +C */
++#define CMODE_IMMUNE    0x00200000      /* sporksircd +M */
++#define CMODE_ADMINONLY 0x00400000      /* sporksircd +A (afailircd W) */
++#define CMODE_OPERONLY  0x00800000      /* sporksircd +O */
++#define CMODE_SSLONLY   0x01000000      /* sporksircd +Z (afailircd y) */
++#define CMODE_NONOTICE	0x02000000	/* sporksircd +T */
++#define CMODE_NOCAPS	0x04000000	/* sporksircd +G */
++#define CMODE_NOKICKS	0x08000000	/* sporksircd +E (afailircd Q) */
++#define CMODE_NONICKS	0x10000000	/* sporksircd +N */
++#define CMODE_NOREPEAT	0x20000000	/* sporksircd +K */
++#define CMODE_KICKNOREJOIN 0x40000000   /* sporksircd +J */
++
++#endif
+diff -Nur old//modules/protocol/afailircd.c new//modules/protocol/afailircd.c
+--- old//modules/protocol/afailircd.c	1969-12-31 19:00:00.000000000 -0500
++++ new//modules/protocol/afailircd.c	2011-07-16 23:05:04.281005728 -0400
+@@ -0,0 +1,120 @@
++/*
++ * Copyright (c) 2003-2004 E. Will et al.
++ * Copyright (c) 2005-2008 Atheme Development Group
++ * Copyright (c) 2008-2010 sporksircd Development Group
++ * Copyright (C) 2010 Elizabeth Jennifer Myers
++ * Copyright (c) 2011 afailircd development team
++ * Rights to this code are documented in doc/LICENSE.
++ *
++ * This file contains protocol support for afailircd
++ *
++ */
++
++#include "atheme.h"
++#include "uplink.h"
++#include "pmodule.h"
++#include "protocol/charybdis.h"
++#include "protocol/afailircd.h"
++
++DECLARE_MODULE_V1("protocol/afailircd", true, _modinit, NULL, PACKAGE_STRING, "aFailIRCd development team");
++
++/* *INDENT-OFF* */
++
++ircd_t aFailIRCd = {
++        "aFailIRCd 0+",					/* IRCd name */
++        "$$",                           /* TLD Prefix, used by Global. */
++        true,                           /* Whether or not we use IRCNet/TS6 UID */
++        false,                          /* Whether or not we use RCOMMAND */
++        true,                           /* Whether or not we support channel owners. */
++        true,                           /* Whether or not we support channel protection. */
++        true,                           /* Whether or not we support halfops. */
++		false,							/* Whether or not we use P10 */
++		false,							/* Whether or not we use vHosts. */
++	CMODE_EXLIMIT | CMODE_PERM | CMODE_IMMUNE, /* Oper-only cmodes */
++        CSTATUS_OWNER,                  /* Integer flag for owner channel flag. */
++        CSTATUS_PROTECT,                /* Integer flag for protect channel flag. */
++        CSTATUS_HALFOP,                 /* Integer flag for halfops. */
++        "+q",                           /* Mode we set for owner. */
++        "+a",                           /* Mode we set for protect. */
++        "+h",                           /* Mode we set for halfops. */
++	PROTOCOL_AFAILIRCD,					/* Protocol type */
++	CMODE_PERM,							/* Permanent cmodes */
++	CMODE_IMMUNE,						/* Oper-immune cmode */
++	"begIZ",							/* Ban-like cmodes */
++	'e',								/* Except mchar */
++	'I',								/* Invex mchar */
++	IRCD_CIDR_BANS | IRCD_HOLDNICK		/* Flags */
++};
++
++struct cmode_ afailircd_mode_list[] = {
++  { 'i', CMODE_INVITE },
++  { 'm', CMODE_MOD    },
++  { 'n', CMODE_NOEXT  },
++  { 'p', CMODE_PRIV   },
++  { 's', CMODE_SEC    },
++  { 't', CMODE_TOPIC  },
++  { 'c', CMODE_NOCOLOR},		/* cmodes/nocolour.c */
++  { 'r', CMODE_REGONLY},
++  { 'z', CMODE_OPMOD  },
++  { 'A', CMODE_FINVITE},
++  { 'E', CMODE_EXLIMIT},
++  { 'P', CMODE_PERM   },
++  { 'F', CMODE_FTARGET},
++  { 'D', CMODE_DISFWD },
++  { 'M', CMODE_IMMUNE },		/* cmodes/no_oper_kick */
++  { 'C', CMODE_NOCTCP },		/* cmodes/noctcp */
++  { 'W', CMODE_ADMINONLY },		/* cmodes/adminonly */
++  { 'O', CMODE_OPERONLY },		/* cmodes/operonly */
++  { 'y', CMODE_SSLONLY },		/* cmodes/sslonly */
++  { 'T', CMODE_NONOTICE },		/* cmodes/nonotice */
++  { 'G', CMODE_NOCAPS },		/* cmodes/nocaps */
++  { 'Q', CMODE_NOKICKS },		/* cmodes/nokicks */
++  { 'N', CMODE_NONICKS },		/* cmodes/nonicks */
++  { 'K', CMODE_NOREPEAT },		/* cmodes/norepeat */
++  { 'J', CMODE_KICKNOREJOIN },  /* cmodes/nokickrejoin */
++  { '\0', 0 }
++};
++
++struct cmode_ afailircd_status_mode_list[] = {
++  { 'q', CSTATUS_OWNER },
++  { 'a', CSTATUS_PROTECT },
++  { 'o', CSTATUS_OP    },
++  { 'h', CSTATUS_HALFOP },
++  { 'v', CSTATUS_VOICE },
++  { '\0', 0 }
++};
++
++struct cmode_ afailircd_prefix_mode_list[] = {
++  { '~', CSTATUS_OWNER },
++  { '&', CSTATUS_PROTECT },
++  { '@', CSTATUS_OP    },
++  { '%', CSTATUS_HALFOP },
++  { '+', CSTATUS_VOICE },
++  { '\0', 0 }
++};
++
++struct cmode_ afailircd_user_mode_list[] = {
++  { 'a', UF_ADMIN    },
++  { 'i', UF_INVIS    },
++  { 'o', UF_IRCOP    },
++  { 'D', UF_DEAF     },
++  { '\0', 0 }
++};
++
++/* *INDENT-ON* */
++
++void _modinit(module_t * m)
++{
++	MODULE_TRY_REQUEST_DEPENDENCY(m, "protocol/charybdis");
++
++	mode_list = afailircd_mode_list;
++	user_mode_list = afailircd_user_mode_list;
++	status_mode_list = afailircd_status_mode_list;
++	prefix_mode_list = afailircd_prefix_mode_list;
++
++	ircd = &aFailIRCd;
++
++	m->mflags = MODTYPE_CORE;
++
++	pmodule_loaded = true;
++}
+diff -Nur old//modules/protocol/Makefile new//modules/protocol/Makefile
+--- old//modules/protocol/Makefile	2011-07-02 21:08:11.000000000 -0400
++++ new//modules/protocol/Makefile	2011-07-16 23:21:17.382658817 -0400
+@@ -28,6 +28,7 @@
+ 	plexus.c	\
+ 	ratbox.c	\
+ 	shadowircd.c	\
++    afailircd.c \
+ 	solidircd.c	\
+ 	ts6-generic.c	\
+ 	undernet.c	\
