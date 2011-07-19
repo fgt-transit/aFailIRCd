@@ -400,7 +400,7 @@ static  const char *  replies[] = {
 /* 378 RPL_WHOISHOST, */        "%s :is connecting from *@%s %s",
 /* 379 RPL_WHOISMODES */	"%s :is using modes %s",
 /* 380 */       NULL,
-/* 381 RPL_YOUREOPER, */        ":%s 381 %s :Welcome to the wonderful world of being an IRC operator, A.K.A. Gary, Indiana.",
+/* 381 RPL_YOUREOPER, */        ":%s 381 %s :i love why love o love =] plz no abuse!!",
 /* 382 RPL_REHASHING, */        ":%s 382 %s %s :Rehashing",
 /* 383 */       NULL,
 /* 384 RPL_MYPORTIS, */		NULL,
